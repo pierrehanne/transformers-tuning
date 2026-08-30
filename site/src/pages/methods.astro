@@ -1,0 +1,51 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const methods = [
+  ["LoRA", "low-rank", "The reliable baseline: mature, mergeable, and broadly supported.", "Start here for most language-model adaptation."],
+  ["RS-LoRA", "low-rank", "Rank-stable scaling improves behavior as rank increases.", "Use when basic LoRA underfits at low rank."],
+  ["DoRA", "low-rank", "Separates weight direction and magnitude for additional capacity.", "Use when quality matters more than minimal overhead."],
+  ["AdaLoRA", "adaptive", "Moves a fixed rank budget toward the most useful matrices.", "Use under strict budgets with time to tune schedules."],
+  ["LoHa / LoKr", "factorized", "Hadamard or Kronecker factorizations offer compact expressivity.", "Consider for large projections and vision models."],
+  ["VeRA", "shared", "Shares frozen projections and stores only learned scaling vectors.", "Use when serving many tiny task adapters."],
+  ["IA³", "scaling", "Rescales key, value, and feed-forward activations with vectors.", "Use for extremely small adapters."],
+  ["OFT / BOFT / HRA", "orthogonal", "Transform weights while preserving geometric structure.", "Use when retention and geometry matter."],
+  ["FourierFT", "spectral", "Learns a sparse set of frequency-domain coefficients.", "Use when the parameter budget is exceptionally tight."],
+  ["Prompt tuning", "soft prompt", "Learns virtual tokens at the model input.", "Use when learned context can express the task."],
+  ["Prefix tuning", "soft prompt", "Adds learned key/value prefixes throughout the network.", "Use for more control over generation."],
+  ["P-tuning", "soft prompt", "Generates virtual tokens through a prompt encoder.", "Use for expressive prompt-based NLU adaptation."],
+  ["LayerNorm tuning", "selective", "Updates only normalization scale and bias.", "Use for mild distribution shifts."],
+  ["Trainable tokens", "selective", "Updates selected rows of the embedding table.", "Use for new domain or control tokens."],
+];
+---
+
+<Layout title="Method field guide" description="Compare PEFT techniques and choose the right adapter.">
+  <article class="content">
+    <p class="eyebrow">Method field guide</p>
+    <h1>Choose for the constraint you actually have.</h1>
+    <p>There is no universally best adapter. Start with LoRA, establish a quality and resource baseline, then change methods only to solve a measured constraint.</p>
+    <div class="method-grid">
+      {methods.map(([name, family, description, use]) => (
+        <section class="card">
+          <span class="tag">{family}</span><h3>{name}</h3><p>{description}</p><p class="use"><strong>Best fit:</strong> {use}</p>
+        </section>
+      ))}
+    </div>
+    <h2>A practical decision path</h2>
+    <ol>
+      <li>Try ordinary prompting. Do not train if the base model already solves the task.</li>
+      <li>Try learned prompts when task behavior can fit in context and checkpoint size dominates.</li>
+      <li>Use LoRA as the weight-adaptation baseline; combine it with quantization when the base model does not fit.</li>
+      <li>Try RS-LoRA or DoRA for capacity, and IA³ or VeRA for smaller adapter fleets.</li>
+      <li>Adopt specialized methods only after measuring task quality, retention, peak memory, throughput, adapter size, and serving latency.</li>
+    </ol>
+  </article>
+</Layout>
+
+<style>
+  .method-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 3rem; }
+  .use { border-top: 1px solid var(--line); padding-top: .8rem; font-size: .9rem; }
+  .use strong { color: var(--ink); }
+  @media (max-width: 680px) { .method-grid { grid-template-columns: 1fr; } }
+</style>
+

@@ -1,0 +1,54 @@
+---
+import Layout from "../layouts/Layout.astro";
+const base = import.meta.env.BASE_URL;
+---
+
+<Layout title="Practical PEFT" description="Learn and run modern parameter-efficient fine-tuning techniques.">
+  <section class="shell hero">
+    <p class="eyebrow">Fine-tune less. Adapt more.</p>
+    <h1>Make large models <em>yours</em> without training every weight.</h1>
+    <p class="lead">A tested Python laboratory for comparing LoRA, soft prompts, orthogonal adapters, sparse updates, and other PEFT techniques through one consistent interface.</p>
+    <div class="actions">
+      <a class="button" href={`${base}guide/`}>Run your first adapter</a>
+      <a class="button secondary" href={`${base}methods/`}>Compare 17 methods</a>
+    </div>
+  </section>
+
+  <section class="shell numbers" aria-label="Project highlights">
+    <div><strong>17</strong><span>techniques</span></div>
+    <div><strong>1</strong><span>training CLI</span></div>
+    <div><strong>&lt;1%</strong><span>typical trainable share</span></div>
+  </section>
+
+  <section class="shell why">
+    <p class="eyebrow">Why PEFT?</p>
+    <h2>Keep the foundation. Learn the difference.</h2>
+    <div class="grid">
+      <article class="card"><span class="tag">Memory</span><h3>Train fewer parameters</h3><p>Freeze the expensive base model and optimize a compact task-specific state.</p></article>
+      <article class="card"><span class="tag">Storage</span><h3>Ship small adapters</h3><p>Reuse one base model across many domains instead of storing a full copy per task.</p></article>
+      <article class="card"><span class="tag">Iteration</span><h3>Compare with evidence</h3><p>Swap methods behind one CLI and measure quality, memory, speed, and checkpoint size.</p></article>
+    </div>
+  </section>
+
+  <section class="shell terminal">
+    <div><p class="eyebrow">Three commands to start</p><h2>From clone to training.</h2></div>
+    <pre><code>uv sync --extra dev
+uv run peft-train --method lora --max-samples 100
+uv run pytest</code></pre>
+  </section>
+</Layout>
+
+<style>
+  .hero { padding: clamp(6rem, 12vw, 10rem) 0 5rem; }
+  .hero em { color: var(--lime); font-style: normal; }
+  .lead { font-size: 1.15rem; max-width: 700px; }
+  .actions { display: flex; gap: .8rem; margin-top: 2rem; flex-wrap: wrap; }
+  .numbers { display: grid; grid-template-columns: repeat(3, 1fr); border-block: 1px solid var(--line); }
+  .numbers div { padding: 2rem; display: flex; flex-direction: column; border-right: 1px solid var(--line); }
+  .numbers div:last-child { border: 0; }
+  .numbers strong { font-size: 2.5rem; color: var(--lime); }
+  .numbers span { color: var(--muted); text-transform: uppercase; font: .7rem ui-monospace, monospace; }
+  .why { padding-top: 8rem; }
+  .terminal { padding-top: 8rem; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+  @media (max-width: 760px) { .numbers div { padding: 1rem; } .terminal { grid-template-columns: 1fr; } }
+</style>

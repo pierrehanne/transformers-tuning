@@ -1,0 +1,51 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Training guide" description="Install, train, evaluate, and extend a PEFT adapter.">
+  <article class="content">
+    <p class="eyebrow">Hands-on guide</p>
+    <h1>Train an adapter you can explain.</h1>
+    <p>The project keeps the data pipeline and trainer fixed while the adapter configuration changes. That makes comparisons easier to interpret.</p>
+
+    <h2>1. Prepare the environment</h2>
+    <pre><code>uv sync --extra dev
+uv run peft-train --help</code></pre>
+    <p>Python 3.11–3.13 is supported. The lockfile pins the complete Python environment.</p>
+
+    <h2>2. Run a small baseline</h2>
+    <pre><code>uv run peft-train \
+  --method lora \
+  --model HuggingFaceTB/SmolLM2-135M \
+  --max-samples 100 \
+  --epochs 1</code></pre>
+    <p>The saved directory contains adapter state rather than a duplicate of the base model. Keep the exact base-model revision alongside experimental metadata.</p>
+
+    <h2>3. Target the correct modules</h2>
+    <p>Projection names vary by architecture. Llama-like models commonly expose <code>q_proj</code> and <code>v_proj</code>; other families use different names. Inspect <code>model.named_modules()</code> and verify the reported trainable-parameter count before training.</p>
+
+    <h2>4. Compare fairly</h2>
+    <ul>
+      <li>Hold the model revision, dataset split, tokenization, seed, and evaluation protocol constant.</li>
+      <li>Record quality and retention, not only training loss.</li>
+      <li>Measure peak accelerator memory, examples per second, checkpoint bytes, and inference latency.</li>
+      <li>Compare against prompting, full fine-tuning when feasible, and a well-tuned LoRA baseline.</li>
+    </ul>
+
+    <h2>5. Add another technique</h2>
+    <p>Add a builder and metadata entry to <code>METHODS</code>, then add tests. The CLI discovers registry entries automatically.</p>
+    <pre><code>uv run ruff check .
+uv run ruff format --check .
+uv run pytest
+npm --prefix site run build</code></pre>
+
+    <h2>Primary references</h2>
+    <ul>
+      <li><a href="https://huggingface.co/docs/peft/main/methods/overview">Hugging Face PEFT methods overview</a></li>
+      <li><a href="https://huggingface.co/docs/peft/main/conceptual_guides/lora">LoRA conceptual guide</a></li>
+      <li><a href="https://huggingface.co/docs/peft/main/conceptual_guides/prompting">Soft prompts conceptual guide</a></li>
+      <li><a href="https://docs.astral.sh/uv/">uv documentation</a></li>
+    </ul>
+  </article>
+</Layout>
+

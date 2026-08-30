@@ -1,0 +1,80 @@
+---
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+const base = import.meta.env.BASE_URL;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <link rel="icon" href={`${base}favicon.svg`} />
+    <title>{title} · Transformers Tuning</title>
+  </head>
+  <body>
+    <header class="shell nav">
+      <a class="brand" href={base}>Transformers<span>Tuning</span></a>
+      <nav aria-label="Primary navigation">
+        <a href={`${base}methods/`}>Methods</a>
+        <a href={`${base}guide/`}>Guide</a>
+        <a href="https://github.com/pierrehanne/transformers-tuning">GitHub ↗</a>
+      </nav>
+    </header>
+    <main><slot /></main>
+    <footer class="shell">
+      <p>Built for practical, measurable parameter-efficient fine-tuning.</p>
+      <p>MIT licensed · PyTorch · Hugging Face PEFT</p>
+    </footer>
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    color-scheme: dark;
+    --ink: #f4f1e8;
+    --muted: #aaa79e;
+    --surface: #141512;
+    --line: #30332c;
+    --lime: #c8ff57;
+    --orange: #ff8450;
+    font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+    background: #0b0c0a;
+    color: var(--ink);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: radial-gradient(circle at 80% 0, #243016 0, transparent 32rem), #0b0c0a; }
+  a { color: inherit; }
+  .shell { width: min(1120px, calc(100% - 2.5rem)); margin-inline: auto; }
+  .nav { min-height: 78px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); }
+  .brand { font: 800 1.05rem ui-monospace, monospace; text-decoration: none; letter-spacing: -.04em; }
+  .brand span { color: var(--lime); }
+  nav { display: flex; gap: 1.3rem; }
+  nav a { color: var(--muted); text-decoration: none; font-size: .9rem; }
+  nav a:hover { color: var(--lime); }
+  h1, h2, h3 { letter-spacing: -.045em; line-height: 1.05; }
+  h1 { font-size: clamp(3.2rem, 8vw, 7rem); margin: 0; max-width: 920px; }
+  h2 { font-size: clamp(2rem, 5vw, 3.5rem); }
+  p { color: var(--muted); line-height: 1.7; }
+  code { font-family: ui-monospace, monospace; }
+  pre { background: #050605; border: 1px solid var(--line); padding: 1.2rem; overflow-x: auto; border-radius: .5rem; }
+  .eyebrow { color: var(--lime); text-transform: uppercase; letter-spacing: .16em; font: 700 .75rem ui-monospace, monospace; }
+  .button { display: inline-block; background: var(--lime); color: #10120c; padding: .8rem 1.1rem; border-radius: .3rem; text-decoration: none; font-weight: 750; }
+  .button.secondary { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  .card { background: color-mix(in srgb, var(--surface) 90%, transparent); border: 1px solid var(--line); padding: 1.35rem; border-radius: .55rem; }
+  .card h3 { margin-top: 0; font-size: 1.25rem; }
+  .card .tag { color: var(--orange); font: 700 .7rem ui-monospace, monospace; text-transform: uppercase; }
+  .content { width: min(850px, calc(100% - 2.5rem)); margin: 5rem auto; }
+  .content h1 { font-size: clamp(3rem, 7vw, 5.5rem); }
+  .content h2 { margin-top: 4rem; border-top: 1px solid var(--line); padding-top: 2rem; }
+  .content li { color: var(--muted); line-height: 1.7; margin-block: .5rem; }
+  footer { margin-top: 8rem; padding: 2.5rem 0; border-top: 1px solid var(--line); display: flex; justify-content: space-between; font-size: .8rem; }
+  @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } nav { gap: .7rem; } footer { display: block; } }
+</style>
+
